@@ -4,7 +4,7 @@ vim.opt.cursorline = true
 vim.opt.breakindent = true
 vim.opt.scrolloff = 10
 
-vim.opt.tabstop = 2
+vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
@@ -36,7 +36,11 @@ return require('packer').startup(function(use)
   use ({ 
     'projekt0n/github-nvim-theme', 
     config = function() 
-      require('github-theme').setup({})
+      require('github-theme').setup({
+        options = {
+	  transparent = true,
+        },
+      })
       vim.cmd('colorscheme github_dark_dimmed')
     end
   })
