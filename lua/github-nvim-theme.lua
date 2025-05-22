@@ -9,3 +9,4 @@ return {
         vim.cmd('colorscheme github_dark')
     end
 }
+
