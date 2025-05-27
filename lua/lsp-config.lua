@@ -2,7 +2,12 @@ return {
     { "Hoffs/omnisharp-extended-lsp.nvim", },
     {
         'williamboman/mason.nvim', config = function()
-            require('mason').setup()
+            require('mason').setup({
+                registries = {
+                    "github:mason-org/mason-registry",
+                    "github:Crashdummyy/mason-registry",
+                },
+            })
         end
     },
     {
@@ -10,10 +15,19 @@ return {
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "lua_ls",
-                    "omnisharp",
+                    -- "omnisharp",
                 },
             })
         end
+    },
+    {
+        "seblyng/roslyn.nvim",
+        ft = "cs",
+        ---@module 'roslyn.config'
+        ---@type RoslynNvimConfig
+        opts = {
+            -- your configuration comes here; leave empty for default settings
+        },
     },
     {
         'neovim/nvim-lspconfig', version = 'v2.1.0', config = function()
@@ -30,6 +44,8 @@ return {
                     }
                 }
             })
+
+            --[[ 
             config.omnisharp.setup({
                 cmd = { "dotnet", vim.fn.stdpath("data") .. "/mason/packages/omnisharp/OmniSharp.dll" },
                 handlers = {
@@ -39,6 +55,7 @@ return {
                     ["textDocument/implementation"] = require("omnisharp_extended").implementation_handler,
                 },
             })
+            ]]
 
             -- vim.keymap.set("n", "<leader>h", vim.lsp.buf.hover, {})
             vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
