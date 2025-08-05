@@ -1,5 +1,5 @@
 local function is_windows()
-    return package.config.sub(1, 1) == '\\';
+    return vim.fn.has('macunix');
 end
 
 local lsp_list = {'lua_ls', 'zls', 'rust-analyzer'}
