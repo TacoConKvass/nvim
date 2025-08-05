@@ -1,6 +1,32 @@
-return {
-    { "Hoffs/omnisharp-extended-lsp.nvim", },
+local function is_windows()
+    return package.config.sub(1, 1) == '\\';
+end
+
+local lsp_list = {'lua_ls', 'zls', 'rust-analyzer', 'nil_ls'}
+
+local lspPlugins = {
     {
+        'neovim/nvim-lspconfig', version = 'v2.1.0', config = function()
+            local capabilities = require('cmp_nvim_lsp').default_capabilities();
+
+
+            for _, lsp in ipairs(lsp_list) do
+                vim.lsp.config(lsp, { capabilities = capabilities })
+                vim.lsp.enable(lsp)
+            end
+
+            -- vim.keymap.set("n", "<leader>h", vim.lsp.buf.hover, {})
+            vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
+            -- vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
+            vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, {})
+            -- vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, {})
+            -- vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
+        end
+    },
+}
+
+if is_windows() then
+    lspPlugins.insert({
         'williamboman/mason.nvim', config = function()
             require('mason').setup({
                 registries = {
@@ -15,54 +41,10 @@ return {
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "lua_ls",
-                    -- "omnisharp",
                 },
             })
         end
-    },
-    {
-        "seblyng/roslyn.nvim",
-        ft = "cs",
-        ---@module 'roslyn.config'
-        ---@type RoslynNvimConfig
-        opts = {
-            -- your configuration comes here; leave empty for default settings
-        },
-    },
-    {
-        'neovim/nvim-lspconfig', version = 'v2.1.0', config = function()
-            local config = require("lspconfig")
-            local capabilities = require("cmp_nvim_lsp").default_capabilities()
+    })
+end
 
-            config.lua_ls.setup({
-                capabilities = capabilities,
-                settings = {
-                    Lua = {
-                        diagnostics = {
-                            globals = { 'vim' }
-                        }
-                    }
-                }
-            })
-
-            --[[ 
-            config.omnisharp.setup({
-                cmd = { "dotnet", vim.fn.stdpath("data") .. "/mason/packages/omnisharp/OmniSharp.dll" },
-                handlers = {
-                    ["textDocument/definition"] = require("omnisharp_extended").definition_handler,
-                    ["textDocument/typeDefinition"] = require("omnisharp_extended").type_definition_handler,
-                    ["textDocument/references"] = require("omnisharp_extended").references_handler,
-                    ["textDocument/implementation"] = require("omnisharp_extended").implementation_handler,
-                },
-            })
-            ]]
-
-            -- vim.keymap.set("n", "<leader>h", vim.lsp.buf.hover, {})
-            vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
-            -- vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
-            vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, {})
-            -- vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, {})
-            -- vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
-        end
-    },
-}
+return lspPlugins
