@@ -2,9 +2,12 @@ local function is_windows()
     return package.config.sub(1, 1) == '\\';
 end
 
-local lsp_list = {'lua_ls', 'zls', 'rust-analyzer', 'nil_ls'}
+local lsp_list = {'lua_ls', 'zls', 'rust-analyzer'}
+if not is_windows() then
+    table.insert(lsp_list, 'nil_ls');
+end
 
-local lspPlugins = {
+local lsp_plugins = {
     {
         'neovim/nvim-lspconfig', version = 'v2.1.0', config = function()
             local capabilities = require('cmp_nvim_lsp').default_capabilities();
@@ -26,25 +29,27 @@ local lspPlugins = {
 }
 
 if is_windows() then
-    lspPlugins.insert({
-        'williamboman/mason.nvim', config = function()
-            require('mason').setup({
-                registries = {
-                    "github:mason-org/mason-registry",
-                    "github:Crashdummyy/mason-registry",
-                },
-            })
-        end
-    },
-    {
-        'williamboman/mason-lspconfig.nvim', config = function()
-            require("mason-lspconfig").setup({
-                ensure_installed = {
-                    "lua_ls",
-                },
-            })
-        end
+    table.insert(lsp_plugins, {
+        {
+            'williamboman/mason.nvim', config = function()
+                require('mason').setup({
+                    registries = {
+                        "github:mason-org/mason-registry",
+                        "github:Crashdummyy/mason-registry",
+                    },
+                })
+            end
+        },
+        {
+            'williamboman/mason-lspconfig.nvim', config = function()
+                require("mason-lspconfig").setup({
+                    ensure_installed = {
+                        "lua_ls",
+                    },
+                })
+            end
+        }
     })
 end
 
-return lspPlugins
+return lsp_plugins
