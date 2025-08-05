@@ -21,7 +21,7 @@ local lsp_plugins = {
             -- vim.keymap.set("n", "<leader>h", vim.lsp.buf.hover, {})
             vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
             -- vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
-            vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, {})
+            vim.keymap.set({"n", "i"}, "<C-s>", vim.lsp.buf.signature_help, {})
             -- vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, {})
             -- vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
         end
