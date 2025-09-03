@@ -1,5 +1,5 @@
 local function is_windows()
-    return vim.fn.has('macunix');
+    return not vim.fn.has('macunix');
 end
 
 local lsp_list = {'lua_ls', 'zls', 'rust-analyzer'}
