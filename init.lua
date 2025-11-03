@@ -25,6 +25,7 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.signcolumn = 'yes:1'
+vim.opt.relativenumber = true
 
 vim.opt.swapfile = false
 
@@ -36,3 +37,8 @@ vim.diagnostic.config({
 
 -- << Plugins >> --
 require('lazy').setup('plugins')
+
+vim.keymap.set('n', '<left>', '')
+vim.keymap.set('n', '<right>', '')
+vim.keymap.set('n', '<up>', '')
+vim.keymap.set('n', '<down>', '')
